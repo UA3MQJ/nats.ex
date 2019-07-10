@@ -1,4 +1,4 @@
-defmodule Gnat.Handshake do
+defmodule Gnat.Stream.Handshake do
   alias Gnat.Parsec
   require Logger
 
@@ -16,7 +16,7 @@ defmodule Gnat.Handshake do
   defp perform_handshake(tcp, connection_settings) do
     receive do
       {:tcp, ^tcp, operation} ->
-        Logger.debug ">>>> Handshake.perform_handshake RCV operation=#{inspect operation}"
+        Logger.debug ">>>> handshake operation #{inspect operation}"
         {_, [{:info, options}]} = Parsec.parse(Parsec.new(), operation)
         {:ok, socket} = upgrade_connection(tcp, options, connection_settings)
         send_connect_message(socket, options, connection_settings)
@@ -27,13 +27,13 @@ defmodule Gnat.Handshake do
   end
 
   # defp socket_write(%{tls: true}, socket, iodata), do: :ssl.send(socket, iodata)
-  # defp socket_write(_, socket, iodata), do: :gen_tcp.send(socket, iodata)
   defp socket_write(%{tls: true}, socket, iodata) do
-    Logger.debug ">>>> Handshake.socket_write tls iodata=#{inspect iodata}"
+    Logger.debug ">>>> handshake socket_write #{inspect iodata}"
     :ssl.send(socket, iodata)
   end
+  # defp socket_write(_, socket, iodata), do: :gen_tcp.send(socket, iodata)
   defp socket_write(_, socket, iodata) do
-    Logger.debug ">>>> Handshake.socket_write iodata=#{inspect iodata}"
+    Logger.debug ">>>> handshake socket_write #{inspect iodata}"
     :gen_tcp.send(socket, iodata)
   end
 

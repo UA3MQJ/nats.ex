@@ -22,6 +22,8 @@ receive do
 end
 ```
 
+{:ok, gnat} = Gnat.Stream.start_link()
+
 ## Instrumentation
 
 Gnat uses [telemetry](https://hex.pm/packages/telemetry) to make instrumentation data available to clients.
