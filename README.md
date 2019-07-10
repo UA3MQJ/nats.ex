@@ -68,6 +68,8 @@ This can be added to your supervision tree in your project and will handle autom
 For long-lived subscriptions consider using `Gnat.ConsumerSupervisor` .
 This can also be added to your supervision tree and use a supervised connection to re-establish a subscription.
 It also handles details like handling each message in a supervised process so you isolate failures and get OTP logs when an unexpected error occurs.
+=======
+{:ok, gnat} = Gnat.Stream.start_link()
 
 ## Instrumentation
 

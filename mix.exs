@@ -39,7 +39,8 @@ defmodule Gnat.Mixfile do
       {:nimble_parsec, "~> 0.5"},
       {:nkeys, "~> 0.2"},
       {:propcheck, "~> 1.0", only: :test},
-      {:telemetry, "~> 0.4"}
+      {:telemetry, "~> 0.4"},
+      {:exprotobuf, "~> 1.2"},
     ]
   end
 
