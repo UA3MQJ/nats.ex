@@ -22,7 +22,24 @@ receive do
 end
 ```
 
-{:ok, gnat} = Gnat.Stream.start_link()
+Streaming
+
+```elixir
+{:ok, gnat_stream} = Gnat.Stream.start_link(%{host: 'localhost', port: 4223})
+
+Gnat.Stream.sub(gnat_stream, self(), "some_topic")
+
+Gnat.Stream.pub(gnat_stream, "some_topic", "some_message1")
+# or publish without ack
+# Gnat.Stream.pub(gnat_stream, "some_topic", "some_message", [ack: false])
+
+receive do
+  {:nats_stream_msg, msg} ->
+    IO.puts "#{msg.subject}: #{msg.data}"
+    Gnat.Stream.ack(gnat_stream, msg)
+end
+
+```
 
 ## Instrumentation
 

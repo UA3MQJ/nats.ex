@@ -214,7 +214,6 @@ defmodule Gnat do
   @impl GenServer
   def handle_info({:tcp, socket, data}, %{socket: socket}=state) do
     data_packets = receive_additional_tcp_data(socket, [data], 10)
-    Logger.debug ">>> Gnat RCV data_packets = #{inspect data_packets}"
     new_state = Enum.reduce(data_packets, state, fn(data, %{parser: parser}=state) ->
       {new_parser, messages} = Parsec.parse(parser, data)
       new_state = %{state | parser: new_parser}
@@ -314,11 +313,9 @@ defmodule Gnat do
   # end
   # defp socket_write(%{socket: socket}, iodata), do: :gen_tcp.send(socket, iodata)
   defp socket_write(%{socket: socket, connection_settings: %{tls: true}}, iodata) do
-    Logger.debug ">>>> Gnat.socket_write TLS iodata=#{inspect iodata}"
     :ssl.send(socket, iodata)
   end
   defp socket_write(%{socket: socket}, iodata) do
-    Logger.debug ">>>> Gnat.socket_write iodata=#{inspect iodata}"
     :gen_tcp.send(socket, iodata)
   end
 
@@ -401,4 +398,14 @@ defmodule Gnat do
                 end
     %{state | receivers: receivers}
   end
+
+
+  @doc """
+  Generate a unique sid.
+
+  The sid is a hex string representing random `bytes` bytes.
+  """
+  @spec new_sid(integer) :: String.t
+  def new_sid(bytes \\ 4), do: :crypto.strong_rand_bytes(4) |> Base.encode16()
+
 end
