@@ -41,6 +41,7 @@ defmodule Gnat.Mixfile do
       {:propcheck, "~> 1.0", only: :test},
       {:telemetry, "~> 0.4"},
       {:exprotobuf, "~> 1.2"},
+      {:ecto, "~> 3.0"},
     ]
   end
 
