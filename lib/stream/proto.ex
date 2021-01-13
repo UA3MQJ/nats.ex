@@ -79,7 +79,8 @@ defmodule Gnat.Stream.Proto do
       inbox: subscription.inbox,
       maxInFlight: options[:max_in_flight],
       ackWaitInSecs: options[:ack_wait_in_secs],
-      startPosition: start_position
+      startPosition: start_position,
+      qGroup: options[:queue_group]
     ) |> SubscriptionRequest.encode
   end
 
